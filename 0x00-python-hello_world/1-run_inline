@@ -1,3 +1,0 @@
-#!/bin/bash
-number = 98
-print(f"Bast school {:d}".format(number))
