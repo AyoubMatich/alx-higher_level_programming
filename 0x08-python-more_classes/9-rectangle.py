@@ -1,20 +1,36 @@
 #!/usr/bin/python3
-"""5-rectangle, built for Holberton Python project 0x08 task 5.
+"""9-rectangle, built for Holberton Python project 0x08 task 9.
 """
 
 
 class Rectangle:
-    """Takes in args for width and height of a rectangle, and contains methods
-    for calculation of the area or perimeter.
+    """Class for printing or computation of dimensions of a rectangle.
 
-    __str__, __repr__, and __del__ fuctionality defined below.
+    Takes in args for width and height of a rectangle, and contains methods
+    for calculation of the area or perimeter, and for creating a square by
+    making a new instance of equal sides. __str__, __repr__, and __del__
+    fuctionality defined below.
 
-    Args:
-        width (int): horizontal dimension of rectangle, defaults to 0
-        height (int): vertical dimension of rectangle, defaults to 0
+    Attributes:
+        number_of_instances (int): counter incrementing for every
+            instantiation, and decrementing for every instance deletion.
+        print_symbol (str): single character to be used in assembling string
+            representation of rectangle
 
     """
+    number_of_instances = 0
+    print_symbol = '#'
+
     def __init__(self, width=0, height=0):
+        """Increments `number_of_instances` and calls setters for `__width`
+        and `__height`.
+
+        Args:
+            width (int): horizontal dimension of rectangle, defaults to 0
+            height (int): vertical dimension of rectangle, defaults to 0
+
+        """
+        type(self).number_of_instances += 1
         # attribute assigment here engages setters defined below
         self.width = width
         self.height = height
@@ -99,7 +115,7 @@ class Rectangle:
 
         Returns:
             0 if either attribute is 0, or the perimeter: (__width * 2) +
-            (__height * 2).
+        (__height * 2).
 
         """
         if self.__width is 0 or self.__height is 0:
@@ -118,13 +134,13 @@ class Rectangle:
 
         Returns:
             str (str): string suitable for printing rectangle (final newline
-            omitted)
+                omitted)
 
         """
         str = ""
         for row in range(self.__height):
             for col in range(self.__width):
-                str += '#'
+                str += "{}".format(self.print_symbol)
             if self.__width != 0 and row < (self.__height - 1):
                 str += '\n'
         return str
@@ -143,14 +159,54 @@ class Rectangle:
         """Allows use of eval().
 
         Returns:
-            A string of the code needed to create the instance.
+            A string containing the code needed to create the instance.
 
         """
         return "Rectangle({:d}, {:d})".format(self.__width, self.__height)
 
-    @staticmethod
-    def __del__():
-        """Prints message upon deletion of instance.
+    @classmethod
+    def __del__(cls):
+        """Decrements `number_of_instances`, then prints message upon
+        deletion of instance.
 
         """
+        cls.number_of_instances -= 1
         print('Bye rectangle...')
+
+    @staticmethod
+    def bigger_or_equal(rect_1, rect_2):
+        """Compares the area of two instances and returns the larger of the two.
+
+        Args:
+            rect_1 (Rectangle object): first instance to be compared
+            rect_2 (Rectangle object): second instance to be compared
+
+        Raises:
+            TypeError: if `rect_1` or `rect_2` is not an instance of cls.
+
+        Returns:
+            `rect_1` if `rect_1` has an area larger than or equal to `rect_2`,
+        or `rect_2` if it has the larger area
+
+        """
+        if not isinstance(rect_1, Rectangle):
+            raise TypeError('rect_1 must be an instance of Rectangle')
+        if not isinstance(rect_2, Rectangle):
+            raise TypeError('rect_2 must be an instance of Rectangle')
+        if rect_1.area() >= rect_2.area():
+            return rect_1
+        else:
+            return rect_2
+
+    @classmethod
+    def square(cls, size=0):
+        """Returns an instance with equal sides of length `size`.
+
+        Args:
+            size (int): length of sides of square, defaults to 0.
+
+        Returns:
+            new instance of class with equal sides
+
+        """
+        return cls(size, size)
