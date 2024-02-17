@@ -1,94 +1,92 @@
-``add_integer`` module
-======================
+The ``0-add_integer`` module
+============================
+This module contains only one function: add_integer.
 
 Using ``add_integer``
--------------------
+---------------------
+
+First import
+~~~~~~~~~~~~
+First import ``add_integer`` from the ``0-add_integer`` module. Since the file name contains a numeral, you can't use the simple ``from 0-add_integer import add_integer``. You can instead use the following syntax:
+
     >>> add_integer = __import__('0-add_integer').add_integer
 
-Now use it:
-    1) two integers
-    >>> add_integer(7, 9)
-    16
-    
-    2) exact float - integer
-    >>> add_integer(3.0, 5)
-    8
-    
-    3) float with decimal - integer
-    >>> add_integer(3.6, 6)
-    9
+Normal use
+~~~~~~~~~~
+Now add_integer can be used to calculate the sum of two integers:
 
-    4) integer - float with decimal
-    >>> add_integer(5, 3.6)
-    8
-
-    5) negative int - negative int
-    >>> add_integer(-4, -4)
-    -8
-
-    6) negative int - int
-    >>> add_integer(-4, 7)
+    >>> add_integer(1, 2)
     3
 
-    7) int - negative int
-    >>> add_integer(7, -4)
-    3
+    >>> add_integer(100, -4)
+    96
 
-    8) negative float - negative float
-    >>> add_integer(-4.4, -5.5)
-    -9
+Note that the function can take floating point values as well as integers, but they will be cast to int and thus rounded down:
 
-    10) type return with int 
-    >>> type(add_integer(5, 5))
-    <class 'int'>
+    >>> add_integer(3.456, 4)
+    7
 
-    11) type return with float 
-    >>> type(add_integer(5.6, 5.9))
-    <class 'int'>
+    >>> add_integer(23.167, 27.8567)
+    50
 
-    12) string - int
-    >>> add_integer("holberton", 5)
+    >>> add_integer(3.456, -4)
+    -1
+
+Also, the second argument defaults to 98, so entering only one argument is possible if you just want to add it to 98:
+
+    >>> add_integer(5)
+    103
+
+    >>> add_integer(3.456)
+    101
+
+Exceptions
+~~~~~~~~~~
+If a and b are any type other than int or float, the function will raise a TypeError exception with the message ``a must be an integer`` or ``b must be an integer.``
+
+    >>> add_integer('5')
     Traceback (most recent call last):
+        ...
     TypeError: a must be an integer
 
-    13) int - string
-    >>> add_integer(5, "School")
+    >>> add_integer(3, [5])
     Traceback (most recent call last):
+        ...
     TypeError: b must be an integer
 
-    14) one integer
-    >>> add_integer(6)
-    104
-
-    15) one float
-    >>> add_integer(6.4)
-    104
-
-    16) one string
-    >>> add_integer("holberton")
+    >>> add_integer((3, 5))
     Traceback (most recent call last):
+        ...
     TypeError: a must be an integer
 
-    17) no parameters
+Of course, there are some limits to the floats that can be handled:
+
+    >>> pos_inf = float('inf')  # positive infinity
+    >>> add_integer(pos_inf, 4.0)
+    Traceback (most recent call last):
+        ...
+    OverflowError: cannot convert float infinity to integer
+
+    >>> neg_inf = float('-inf')  # negative infinity
+    >>> add_integer(neg_inf, 4.0)
+    Traceback (most recent call last):
+        ...
+    OverflowError: cannot convert float infinity to integer
+
+    >>> not_a_num = float('nan')   # NaN ("not a number", )
+    >>> add_integer(not_a_num, 4.0)
+    Traceback (most recent call last):
+        ...
+    ValueError: cannot convert float NaN to integer
+
+Additionally, there should be one or two arguments provided, otherwise an exception will occur:
+
     >>> add_integer()
     Traceback (most recent call last):
+        ...
     TypeError: add_integer() missing 1 required positional argument: 'a'
 
-    18) float - float
-    >>> add_integer(5.9, 5.9)
-    10
-
-    19) max integer - integer
-    >>> add_integer(1e400, 5)
+    >>> add_integer(1, 2, 3)
     Traceback (most recent call last):
-    OverflowError
-
-    20) integer - max integer
-    >>> add_integer(5, 1e400)
-    Traceback (most recent call last):
-    OverflowError
-
-    
-
-
-
+        ...
+    TypeError: add_integer() takes from 1 to 2 positional arguments but 3 were given
